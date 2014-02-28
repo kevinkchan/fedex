@@ -201,7 +201,7 @@ module Fedex
                 xml.Units package[:dimensions][:units]
               }
             end
-            xml.PhysicalPackagingType package[:type] ||= "BOX"
+            xml.PhysicalPackaging package[:physical_packaging] ||= "BOX"
             add_customer_references(xml, package)
             if package[:special_services_requested] && package[:special_services_requested][:special_service_types]
               xml.SpecialServicesRequested{
