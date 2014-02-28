@@ -51,6 +51,7 @@ module Fedex
         @debug = ENV['DEBUG'] == 'true'
         @shipping_options =  options[:shipping_options] ||={}
         @payment_options = options[:payment_options] ||={}
+        @smart_post_detail = options[:smart_post_detail]
         requires!(@payment_options, :type, :account_number, :name, :company, :phone_number, :country_code) if @payment_options.length > 0
         # Expects hash with addr and port
         if options[:http_proxy]

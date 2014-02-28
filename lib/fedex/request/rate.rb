@@ -34,7 +34,7 @@ module Fedex
         xml.RequestedShipment{
           xml.DropoffType @shipping_options[:drop_off_type] ||= "REGULAR_PICKUP"
           xml.ServiceType service_type if service_type
-          xml.SmartPostDetail smart_post_detail if smart_post_detail
+          xml.SmartPostDetail @smart_post_detail if @smart_post_detail
           xml.PackagingType @shipping_options[:packaging_type] ||= "YOUR_PACKAGING"
           add_shipper(xml)
           add_recipient(xml)
