@@ -60,6 +60,7 @@ module Fedex
           xml.AncillaryEndorsement @smart_post_detail[:ancillary_endorsement]
           xml.SpecialServices @smart_post_detail[:special_services]
           xml.HubID @smart_post_detail[:hub_id]
+          xml.CustomerManifestID @smart_post_detail[:customer_manifest_id]
         }
       end
 
