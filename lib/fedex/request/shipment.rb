@@ -40,7 +40,6 @@ module Fedex
           xml.ShipTimestamp @shipping_options[:ship_timestamp] ||= Time.now.utc.iso8601(2)
           xml.DropoffType @shipping_options[:drop_off_type] ||= "REGULAR_PICKUP"
           xml.ServiceType service_type
-          xml.SmartPostDetail @smart_post_detail if @smart_post_detail
           xml.PackagingType @shipping_options[:packaging_type] ||= "YOUR_PACKAGING"
           add_shipper(xml)
           add_recipient(xml)
@@ -48,8 +47,19 @@ module Fedex
           add_special_services(xml) if @shipping_options[:return_reason]
           add_customs_clearance(xml) if @customs_clearance
           add_custom_components(xml)
+          add_smart_post_detail(xml) if @smart_post_detail
           xml.RateRequestTypes "ACCOUNT"
           add_packages(xml)
+        }
+      end
+
+      def add_smart_post_detail(xml)
+        xml.SmartPostDetail {
+          xml.Indicia @smart_post_detail[:indicia]
+          xml.AncillaryEndorsement @smart_post_detail[:ancillary_endorsement]
+          xml.SpecialServices @smart_post_detail[:special_services]
+          xml.HubID @smart_post_detail[:hub_id]
+          xml.CustomerManifestID @smart_post_detail[:customer_manifest_id]
         }
       end
 
