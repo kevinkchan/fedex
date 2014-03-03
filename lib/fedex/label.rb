@@ -14,7 +14,13 @@ module Fedex
       @options[:format] = label_details[:format]
       if package_details[:tracking_ids].kind_of?(Array)
         fx = package_details[:tracking_ids].select {|x| x[:tracking_id_type]!='USPS'}
-        @options[:tracking_number] = fx.length>0 ? fx.first[:tracking_number] : package_details[:tracking_ids].last[:tracking_number]
+        if fx.length
+          @options[:tracking_number] = fx.first[:tracking_number]
+          usps = package_details[:tracking_ids].select {|x| x[:tracking_id_type]=='USPS'}
+          @options[:usps_tracking_number] = usps.first[:tracking_number] if usps.length
+        else
+          @options[:tracking_number] = package_details[:tracking_ids].last[:tracking_number]
+        end
       else
         @options[:tracking_number] = package_details[:tracking_ids][:tracking_number]
       end
