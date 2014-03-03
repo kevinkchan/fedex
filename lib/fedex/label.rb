@@ -12,8 +12,12 @@ module Fedex
       package_details = label_details[:process_shipment_reply][:completed_shipment_detail][:completed_package_details]
       @options = package_details[:label]
       @options[:format] = label_details[:format]
-      puts package_details
-      @options[:tracking_number] = package_details[:tracking_ids][:tracking_number]
+      if package_details[:tracking_ids].kind_of?(Array)
+        fx = package_details[:tracking_ids].select {|x| x[:tracking_id_type]!='USPS'}
+        @options[:tracking_number] = fx.length>0 ? fx.first[:tracking_number] : package_details[:tracking_ids].last[:tracking_number]
+      else
+        @options[:tracking_number] = package_details[:tracking_ids][:tracking_number]
+      end
       @options[:file_name] = label_details[:file_name]
 
       @image = Base64.decode64(options[:parts][:image]) if has_image?
